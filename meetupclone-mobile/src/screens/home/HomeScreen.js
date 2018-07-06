@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { MeetupApi } from './../../../constants/api';
 import { LoadingScreen } from './../../commons';
+import { MyMeetupList } from './components';
 import styles from './styles/HomeScreen';
 
 const meetupApi = new MeetupApi();
@@ -16,9 +17,9 @@ class HomeScreen extends Component {
     meetups: []
   }
 
-  async componentDidMount() {
+  async componentDidMount() { // declared as async bc fetchGroupMeetups() returns promise. As an alternative, use fetchGroupMeetups().then()
     this.setState({ loading: true });
-    const meetups = this.props.meetupApi.fetchGroupMeetups();
+    const meetups = await this.props.meetupApi.fetchGroupMeetups();
     this.setState({ loading: false, meetups });
   }
 
@@ -32,7 +33,7 @@ class HomeScreen extends Component {
           <Text>HomeScreen</Text>
         </View>
         <View style={styles.bottomContainer}>
-          <Text>HomeScreen</Text>
+          <MyMeetupList meetups={this.state.meetups} />
         </View>
       </View>
     );
